@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Das 0€ KI-Experiment — Live Dashboard | Lizzy AI Solutions</title>
+  <meta name="description" content="Kann ein KI-Avatar mit 0€ Startkapital ein Online-Business aufbauen? Verfolge das Experiment live — mit echten Zahlen, ohne Hype.">
+  <meta property="og:title" content="Das 0€ KI-Experiment — Live Dashboard">
+  <meta property="og:description" content="Echte Zahlen. Kein Hype. Ein KI-Avatar baut ein Business auf.">
+  <meta property="og:type" content="website">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-primary: #0a0f1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a2332;
+      --bg-card-hover: #1f2937;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-blue: #3b82f6;
+      --accent-teal: #14b8a6;
+      --accent-orange: #f97316;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --border: #1e293b;
+      --glow-blue: rgba(59, 130, 246, 0.15);
+      --glow-teal: rgba(20, 184, 166, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 50%, var(--glow-blue) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 50%, var(--glow-teal) 0%, transparent 50%);
+      animation: pulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+      100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(20, 184, 166, 0.1);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--accent-teal);
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s ease-out 0.3s both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+      color: white;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-teal);
+    }
+
+    /* === STATS GRID === */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+
+    .stat-change {
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+    .stat-change.positive { color: var(--accent-green); }
+    .stat-change.negative { color: var(--accent-red); }
+    .stat-change.neutral { color: var(--text-muted); }
+
+    /* === TIMELINE === */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-blue), var(--accent-teal), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2rem;
+      padding-left: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.4rem;
+      width: 10px;
+      height: 10px;
+      background: var(--accent-teal);
+      border-radius: 50%;
+      transform: translateX(-4px);
+    }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      color: var(--accent-teal);
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* === TOOLS === */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .tool-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .tool-card:hover {
+      border-color: var(--accent-orange);
+      transform: translateY(-2px);
+    }
+
+    .tool-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .tool-price {
+      font-size: 0.85rem;
+      color: var(--accent-orange);
+      font-weight: 600;
+    }
+
+    .tool-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 0.75rem;
+    }
+    .tool-link:hover { text-decoration: underline; }
+
+    /* === EMAIL SIGNUP === */
+    .signup-section {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(20, 184, 166, 0.08));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 700px;
+      margin: 3rem auto;
+    }
+
+    .signup-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .signup-section p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .signup-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 450px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .signup-form input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.85rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .signup-form input:focus {
+      border-color: var(--accent-blue);
+    }
+    .signup-form input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .signup-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+    }
+
+    /* === KI HINWEIS === */
+    .ki-banner {
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin: 2rem auto;
+      max-width: 700px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .ki-banner strong {
+      color: var(--accent-orange);
+    }
+
+    /* === FOOTER === */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--accent-blue); }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .hero { min-height: 80vh; padding: 1.5rem; }
+      .section { padding: 2.5rem 1rem; }
+      .signup-section { padding: 2rem 1.25rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .hero-cta { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">
+        <span class="dot"></span>
+        Experiment läuft — Tag 12
+      </div>
+      <h1>Das <span>0€ KI-Experiment</span></h1>
+      <p>Kann ein KI-Avatar mit null Euro Startkapital ein profitables Online-Business aufbauen? Verfolge es live — mit echten Zahlen, ohne Hype, ohne Bullshit.</p>
+      <div class="hero-cta">
+        <a href="#dashboard" class="btn btn-primary">📊 Live-Zahlen ansehen</a>
+        <a href="#newsletter" class="btn btn-secondary">📬 Wöchentliches Update</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- KI HINWEIS -->
+  <div class="ki-banner">
+    <strong>🤖 KI-Hinweis:</strong> Lizzy ist ein KI-generierter Avatar. Alle Inhalte werden von Menschen recherchiert, geprüft und kuratiert. Volle Transparenz — immer.
+  </div>
+
+  <!-- DASHBOARD -->
+  <section class="section" id="dashboard">
+    <div class="section-header">
+      <h2>📊 Live Dashboard</h2>
+      <p>Letzte Aktualisierung: <strong id="last-update">20. März 2026</strong></p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">YouTube Views</div>
+        <div class="stat-value" style="color: var(--accent-blue);">897</div>
+        <div class="stat-change neutral">Seit 9. März 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Subscriber</div>
+        <div class="stat-value" style="color: var(--accent-teal);">1</div>
+        <div class="stat-change neutral">Wir starten bei Null</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Videos produziert</div>
+        <div class="stat-value" style="color: var(--accent-orange);">10</div>
+        <div class="stat-change positive">+2 diese Woche</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Einnahmen (gesamt)</div>
+        <div class="stat-value" style="color: var(--accent-green);">0 €</div>
+        <div class="stat-change neutral">Noch keine Conversions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Investiert</div>
+        <div class="stat-value" style="color: var(--text-primary);">50 €</div>
+        <div class="stat-change neutral">HeyGen + n8n / Monat</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Bestes Video</div>
+        <div class="stat-value" style="font-size: 1.4rem; color: var(--accent-blue);">522 Views</div>
+        <div class="stat-change positive">"38 Jahre Handwerk..."</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Plattformen</div>
+        <div class="stat-value" style="font-size: 1.4rem;">YT · IG · X</div>
+        <div class="stat-change neutral">+TikTok bald</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">KI-Avatare</div>
+        <div class="stat-value" style="color: var(--accent-teal);">3</div>
+        <div class="stat-change neutral">Lizzy · Robert · Klaus</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🗓️ Was bisher geschah</h2>
+      <p>Jeder Schritt dokumentiert — die guten und die schlechten.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">9. März 2026</div>
+        <div class="timeline-title">🚀 Projekt-Start</div>
+        <div class="timeline-desc">Idee: KI-Avatare für Affiliate-Marketing im DACH-Raum. Budget: 50€/Monat. Ziel: Nachweisbar profitabel in 90 Tagen.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">12. März 2026</div>
+        <div class="timeline-title">🎬 Erste Videos produziert</div>
+        <div class="timeline-desc">HeyGen-Avatare erstellt: Lizzy (Tech), Robert (Business), Klaus (Handwerk). Erste 5 Scripts geschrieben.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">15. März 2026</div>
+        <div class="timeline-title">⚙️ Pipeline automatisiert</div>
+        <div class="timeline-desc">Video-Pipeline steht: Script → Edge-TTS → HeyGen → FFmpeg → YouTube. Erste automatische Uploads.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">18. März 2026</div>
+        <div class="timeline-title">📺 YouTube & Instagram live</div>
+        <div class="timeline-desc">Kanal gestartet, Branding fertig, Instagram-Profil eingerichtet. 10 Videos hochgeladen.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">20. März 2026</div>
+        <div class="timeline-title">📊 Erste Analyse</div>
+        <div class="timeline-desc">897 Views, 1 Subscriber, 0 Sales. Erkenntnis: Content allein reicht nicht — Strategie muss her. Dashboard geht online.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS WE USE -->
+  <section class="section" id="tools">
+    <div class="section-header">
+      <h2>🛠️ Die Tools, die wir nutzen</h2>
+      <p>Ehrliche Empfehlungen. Nur was wir selbst getestet haben.*</p>
+    </div>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-name">FunnelCockpit</div>
+        <div class="tool-desc">All-in-One Marketing: Landing Pages, E-Mail, Webinare — ersetzt 3-4 Einzeltools. Die deutsche Alternative.</div>
+        <div class="tool-price">Ab 47 €/Monat</div>
+        <a href="https://www.digistore24.com/redir/98201/aioffice3588/?utm_source=dashboard&utm_medium=landing&utm_campaign=experiment" class="tool-link" target="_blank" rel="noopener">Mehr erfahren →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">KlickTipp</div>
+        <div class="tool-desc">E-Mail-Marketing aus Deutschland. DSGVO-konform, deutsche Server, deutschsprachiger Support.</div>
+        <div class="tool-price">Ab 27 €/Monat</div>
+        <a href="https://www.digistore24.com/redir/38219/aioffice3588/?utm_source=dashboard&utm_medium=landing&utm_campaign=experiment" class="tool-link" target="_blank" rel="noopener">Mehr erfahren →</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">sevDesk</div>
+        <div class="tool-desc">Cloud-Buchhaltung für Selbstständige und Handwerker. Rechnungen, Belege, Steuererklärung — alles an einem Ort.</div>
+        <div class="tool-price">Ab 8,90 €/Monat</div>
+        <a href="#" class="tool-link" style="color: var(--text-muted);">Kommt bald (Affiliate in Prüfung)</a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">HeyGen</div>
+        <div class="tool-desc">KI-Avatar-Videos. So produzieren wir unseren Content — ohne Kamera, ohne Studio.</div>
+        <div class="tool-price">Ab 24 $/Monat</div>
+        <a href="https://heygen.com" class="tool-link" target="_blank" rel="noopener">Zur Website →</a>
+      </div>
+    </div>
+
+    <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 1.5rem;">
+      * Affiliate-Hinweis: Einige Links sind Affiliate-Links. Bei einem Kauf erhalten wir eine Provision — für dich ohne Mehrkosten. Wir empfehlen nur, was wir selbst nutzen.
+    </p>
+  </section>
+
+  <!-- EMAIL SIGNUP -->
+  <section class="section" id="newsletter">
+    <div class="signup-section">
+      <h2>📬 Jeden Freitag: Die echten Zahlen</h2>
+      <p>Kein Spam. Kein Hype. Einmal pro Woche bekommst du das Update: Was lief, was nicht, und was wir gelernt haben.</p>
+      <form class="signup-form" action="#" method="POST" id="signup-form">
+        <input type="email" placeholder="Deine E-Mail-Adresse" required>
+        <button type="submit" class="btn btn-primary">Dabei sein</button>
+      </form>
+      <p class="signup-note">Kein Spam, jederzeit abmeldbar. Deine Daten bleiben bei uns (DSGVO).</p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🤔 Warum machen wir das?</h2>
+    </div>
+    <div style="max-width: 650px; margin: 0 auto; color: var(--text-secondary); font-size: 1.05rem;">
+      <p style="margin-bottom: 1rem;">Jeder verspricht dir "10.000€ im ersten Monat". Niemand zeigt dir die echten Zahlen.</p>
+      <p style="margin-bottom: 1rem;">Wir machen es anders: <strong style="color: var(--text-primary);">Ein öffentlicher Selbstversuch.</strong> KI-Avatare, 50€ Budget, echtes Affiliate-Marketing im DACH-Raum. Jede Woche dokumentiert — die Erfolge UND die Misserfolge.</p>
+      <p style="margin-bottom: 1rem;">Funktioniert es? Wir wissen es noch nicht. Aber du kannst live zusehen, wie wir es herausfinden.</p>
+      <p><strong style="color: var(--accent-teal);">Das ist kein Kurs. Das ist ein Experiment.</strong></p>
+    </div>
+  </section>
+
+  <!-- SOCIAL LINKS -->
+  <section class="section" style="text-align: center;">
+    <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem;">Folge dem Experiment</h3>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="https://www.youtube.com/@LizzyAISolutions" class="btn btn-secondary" target="_blank" rel="noopener">▶️ YouTube</a>
+      <a href="https://instagram.com/lizzyaisolutions" class="btn btn-secondary" target="_blank" rel="noopener">📷 Instagram</a>
+      <a href="https://twitter.com/LizzyAISolutions" class="btn btn-secondary" target="_blank" rel="noopener">𝕏 Twitter/X</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="https://www.youtube.com/@LizzyAISolutions">YouTube</a>
+      <a href="https://instagram.com/lizzyaisolutions">Instagram</a>
+      <a href="mailto:ai-office@maku-hanga.com">Kontakt</a>
+      <a href="#impressum">Impressum</a>
+      <a href="#datenschutz">Datenschutz</a>
+    </div>
+    <p>© 2026 Lizzy AI Solutions — ein Projekt von Maku Hanga e.U.</p>
+    <p style="margin-top: 0.5rem;">
+      Maku Hanga e.U. · Elisabeth Reiner-Kovarik · Dürrenmoos 11a, 9111 Völkermarkt, Österreich · ATU82604326
+    </p>
+    <p style="margin-top: 0.5rem;">
+      🤖 Diese Website und ihre Inhalte wurden mit KI-Unterstützung erstellt. Alle Angaben ohne Gewähr.
+    </p>
+  </footer>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Signup form placeholder (until newsletter tool is set up)
+    document.getElementById('signup-form')?.addEventListener('submit', e => {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      const email = input.value;
+      // TODO: Connect to newsletter API (MailerLite/Brevo/KlickTipp)
+      alert('Danke! 🎉 Wir richten gerade den Newsletter ein. Schreib uns an ai-office@maku-hanga.com und wir nehmen dich manuell auf!');
+      input.value = '';
+    });
+
+    // Update day counter
+    const startDate = new Date('2026-03-09');
+    const today = new Date();
+    const dayCount = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+    const badge = document.querySelector('.badge');
+    if (badge) badge.innerHTML = `<span class="dot"></span> Experiment läuft — Tag ${dayCount}`;
+  </script>
+
+</body>
+</html>
