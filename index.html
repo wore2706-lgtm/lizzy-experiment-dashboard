@@ -685,14 +685,49 @@
       });
     });
 
-    // Signup form placeholder (until newsletter tool is set up)
-    document.getElementById('signup-form')?.addEventListener('submit', e => {
+    // Newsletter signup via MailerLite API
+    document.getElementById('signup-form')?.addEventListener('submit', async e => {
       e.preventDefault();
       const input = e.target.querySelector('input');
-      const email = input.value;
-      // TODO: Connect to newsletter API (MailerLite/Brevo/KlickTipp)
-      alert('Danke! 🎉 Wir richten gerade den Newsletter ein. Schreib uns an ai-office@maku-hanga.com und wir nehmen dich manuell auf!');
-      input.value = '';
+      const btn = e.target.querySelector('button');
+      const email = input.value.trim();
+      if (!email) return;
+      
+      btn.textContent = '⏳ Wird eingetragen...';
+      btn.disabled = true;
+      
+      try {
+        const res = await fetch('https://connect.mailerlite.com/api/subscribers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiOGQ4ODQ2MTQzODU5MWQ1YjE0ZDRmYTM4YzY1ZDQwNTI3OTZhYTIyYjc0Nzg4MmU1YjdkMmE0OThmOTZiZjI4NzE2NjAyZTAzNTU2Y2FhZjgiLCJpYXQiOjE3NzQxMzYwNDMuMTk2NzA4LCJuYmYiOjE3NzQxMzYwNDMuMTk2NzEsImV4cCI6NDkyOTgwOTY0My4xOTI2NzgsInN1YiI6IjIyMzEyMTUiLCJzY29wZXMiOltdfQ.hKCpTEp6oy-EIS-6osoq00pJtUDMkxOzUWkrpa-H7IxdUUwX87NWkTio1B781KAhmH4kUgy04DSEccSdjpkJzl2XIveyTTAP3V0-zpX9t0D3zOlUtDP59ZI2Acn20L-eq-cePJWs4KcmNBkhUfWdCU3LwemynlO9RVfEq1oh0LAi87jnCEJSVf4PB8p16UGJ70CDZqvQapt-G00v8EnjMkL6VM3OXuFjVt_gfYaVyPoKQ-uiMmYFTMB02kVwRpxux0zZ0VMnAsXMjuJdfxWKrkr4wnL_MyEFyQ8Leo8820l-H1Ise2g8IUDSLoUGUxT_qLGGOB3wxACoaCPxyvJGjt_p5uH_Ent7Q3DbOUXYoD7zDHjz97DaaTh_cs2yXCDttQd5F-b8gqJ-54if8l4HnPWApmd3KqFvvHOJ95rrkIhA5dk0qgNS1qRqbH_NaFr0rUVlq9bBKvDQ_wp-cmbeIRsoQIPYTxpcQT3gvRhIims-YaVX87vntBaxREaGZvkKw_fwOoDMa0DURGCw1qiRBfJl555zcNG5GygAM4akPDHk04e3A2ki1v-rvoMuYE_5h2wtVcceTo8YYVtZYEK67k_2SkzcP-j3ttvE_tx4tWEqKdNn4lyL62YRk4726mHM5j0hGijCJ6rx8vIt7o70skiuABssHvQO0Kd0a_Jv4yo'
+          },
+          body: JSON.stringify({
+            email: email,
+            groups: ['182594918177310288'],
+            status: 'active'
+          })
+        });
+        
+        if (res.ok || res.status === 200 || res.status === 201) {
+          input.value = '';
+          btn.textContent = '✅ Du bist dabei!';
+          setTimeout(() => { btn.textContent = 'Dabei sein'; btn.disabled = false; }, 3000);
+        } else {
+          const data = await res.json().catch(() => ({}));
+          if (data.message && data.message.includes('already')) {
+            btn.textContent = '👋 Du bist schon dabei!';
+          } else {
+            btn.textContent = '❌ Fehler — versuch es nochmal';
+          }
+          setTimeout(() => { btn.textContent = 'Dabei sein'; btn.disabled = false; }, 3000);
+        }
+      } catch (err) {
+        btn.textContent = '❌ Netzwerkfehler';
+        setTimeout(() => { btn.textContent = 'Dabei sein'; btn.disabled = false; }, 3000);
+      }
     });
 
     // Update day counter
