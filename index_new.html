@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lizzy AI Solutions</title>
+  <style>
+    body { font-family: system-ui; max-width: 600px; margin: 40px auto; padding: 20px; background: #0a0f1a; color: #f1f5f9; }
+    .code-box { background: #1a2332; padding: 20px; border-radius: 12px; word-break: break-all; font-family: monospace; font-size: 18px; margin: 15px 0; border: 2px solid #3b82f6; user-select: all; text-align: center; }
+    h1 { color: #14b8a6; }
+    .success { color: #22c55e; font-size: 1.3rem; }
+    .hint { color: #94a3b8; font-size: 0.9rem; margin-top: 15px; }
+    .copy-btn { background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; margin-top: 10px; display: block; width: 100%; }
+    .copy-btn:hover { background: #2563eb; }
+  </style>
+</head>
+<body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) {
+      document.write(`
+        <h1>\ud83c\udfb5 TikTok Autorisierung</h1>
+        <p class="success">\u2705 Erfolgreich!</p>
+        <p>Kopiere diesen Code und schicke ihn per Telegram:</p>
+        <div class="code-box">${code}</div>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('${code}');this.textContent='\u2705 Kopiert!'">\ud83d\udccb Code kopieren</button>
+        <p class="hint">\u23f0 Der Code ist nur 10 Minuten g\u00fcltig!</p>
+      `);
+    } else {
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+  <noscript><meta http-equiv="refresh" content="0;url=dashboard.html"></noscript>
+</body>
+</html>
